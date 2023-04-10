@@ -25,16 +25,16 @@ def Fuzzing_Attack(id, leng, data):
     time_offset = 0.001
     Fuzzing_attack = TPCANMsg()
     Fuzzing_attack.ID = int(id,16)
-    Fuzzing_attack.LEN = leng
+    Fuzzing_attack.LEN = int(leng)
     Fuzzing_attack.MSGTYPE = PCAN_MESSAGE_STANDARD
     all_datas += str(hex(Fuzzing_attack.ID)) + "\t" + str(Fuzzing_attack.MSGTYPE) + "\t" + str(hex(Fuzzing_attack.LEN)) 
 
-    for i in range(8):
+    for i in range(int(leng)):
         Fuzzing_attack.DATA[i] = int(data[i*2:i*2+2],16)
         all_datas += "\t" + str(hex(Fuzzing_attack.DATA[i]))
 
     all_datas += "\n"
-    # print(all_datas)
+    print(all_datas)
     time.sleep(time_offset)
 
 
@@ -52,7 +52,7 @@ def writer(ID, dataset):
         for k in range(5, l):
             temp += list(temp_d[cols[k]])[i]
         data_field.append(temp)
-        Fuzzing_Attack(ID,(l-5), temp)
+        # Fuzzing_Attack(i,(l-5), test1[j])
         #ffile.write(temp)
 
     return data_field
@@ -80,10 +80,19 @@ if __name__ == "__main__":
             #     f.write(test[j])
             #     f.write("\n")
             
-            # test1 = list(dict.fromkeys(test))
-            # for j in range(0, len(test1)):
-            #     f1.write(test1[j])
-            #     f1.write("\n")
+            test1 = list(dict.fromkeys(test))
+            for j in range(0, len(test1)):
+                print(test1[j])
+                l = len(test1[j])
+                if l % 2 == 1:
+                    print("Invalid Value")
+                    print(test1[j])
+                    exit()
+                
+                l = l / 2
+                Fuzzing_Attack(i, l, test1[j])
+                # f1.write(test1[j])
+                # f1.write("\n")
             console.log(f"injection of ID: {i} has complete")
-            # f.close()
+            
             # f1.close() 
