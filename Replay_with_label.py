@@ -66,7 +66,7 @@ def Replay_attack(data_iloc):
 
 
 if __name__ == "__main__":
-    dataset_path = "W:\\temp\\attack_data_tools\\Attack_tools\\Fuzzing Attack\\Dataset\\"
+    dataset_path = "Dataset\\"
     dataset_name = "2022.08.12 구쏘울 C-CAN (정상).trc"
     df_dataset = Convert_to_Dataframe(dataset_path+dataset_name)[17:]
     nID = list(dict.fromkeys(df_dataset["ID"]))
