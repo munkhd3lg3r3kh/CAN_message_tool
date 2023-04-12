@@ -6,7 +6,7 @@ import datetime
 
 cols = ["No", "Time_Offset", "Type", "ID", "Data_Length", 'One', 'Two', 'Three', 'Four', 'Five', 'Six', 'Seven', 'Eight']
 x = datetime.datetime.now()
-x = "C:\\Users\\LISA\\Desktop\\뭉흐 공격 도구\\Fuzzing Attack\\Fuzzing Attack Injected Datas " + str(x).split()[0] + ".txt"
+x = "Dataset\\Replay Attack Injected Datas " + str(x).split()[0] + ".txt"
 f = open(x, "a")
 
 # all_data = "No\tID\tTYPE\tLEN\tONE\tTWO\tTHREE\tFOUR\tFIVE\tSIX\tSEVEN\tEIGHT\n"
@@ -40,7 +40,7 @@ if __name__ == "__main__":
             # print("PCAN-USB Pro FD (Ch-1) was initialized")
             mess = CAN.Read(CAN_BUS)
             if hex(mess[1].ID) != "0x0":
-                all_data = ind + ')' + "\t"
+                all_data = str(ind) + ')' + "\t"
                 offset = (time.time() - start_time)*1000
                 all_data += "{:.1f}".format(offset) + "\t"
                 id_hex = hex(mess[1].ID)[2:]
@@ -51,8 +51,9 @@ if __name__ == "__main__":
                     data_hex = hex(mess[1].DATA[j])[2:]
                     for _ in range(2 - len(data_hex)):
                         data_hex = '0' + data_hex.upper()
-                    all_data += "\t" + data_hex
+                    all_data += "\t" + data_hex.upper()
                 all_data += "\n"
+                ind += 1
                 f.write(all_data)
                 print(all_data)
 
