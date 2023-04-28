@@ -22,7 +22,7 @@ def update_progress(progress):
 
 if __name__ == "__main__":
     CAN = PCANBasic()                            #CANi
-    CAN_BUS = PCAN_USBBUS1
+    CAN_BUS = PCAN_USBBUS3
     result = CAN.Initialize(CAN_BUS, PCAN_BAUD_500K, 2047, 0, 0) #Channel, Btr, HwType, IOPort, INterrupt
     counter = 0
     start_time = time.time()
