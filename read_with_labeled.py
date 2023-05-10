@@ -61,6 +61,9 @@ if __name__ == "__main__":
                     if mess[1].DATA[check_ind] == check_val:
                         all_data += str(99) + "\t" + id_hex + "\t" + str(hex(mess[1].LEN)[2:]) 
                         print(all_data)
+                    elif mess[1].DATA[check_ind] == ( check_val + 1 ):
+                        all_data += str(99) + "\t" + id_hex + "\t" + str(hex(mess[1].LEN)[2:]) 
+                        print(all_data)
                     else:
                         all_data += str(mess[1].MSGTYPE) + "\t" + id_hex + "\t" + str(hex(mess[1].LEN)[2:]) 
                 else: 

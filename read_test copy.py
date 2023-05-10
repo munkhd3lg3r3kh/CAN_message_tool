@@ -10,7 +10,7 @@ unused_bits = {'0165': [3, '00'], '02B0': [3, '07'], '0164': [0, '00'], '0370': 
  '0153': [0, '00'], '0329': [7, '10'], '0382': [0, '40'], '0545': [0, 'C8'], '04F0': [0, '00'], '04B1': [4, '00'], '0350': [1, '2B'],
  '01F1': [0, '00'], '02C0': [0, '3D'], '04F2': [0, 'A0'], '0120': [0, '00'], '0517': [1, '00'], '0587': [0, '00'], '00A0': [6, '00'],
  '00A1': [2, '80'], '0510': [0, '00'], '05E4': [0, '00'], '059B': [0, '00'], '0110': [0, 'E0'], '0050': [0, '00'], '04F1': [0, 'C0'],
- '0690': [0, '03'], '05F0': [0, '00'], '051A': [0, '00'], '0034': [0, '00'], '05A0': [0, '00'], '05A2': [0, '25'], '0042': [0, '0B'],
+ '0690': [0, '03'], '05F0': [0, '00'], '051A': [0, '00'], '0034': [0, '00'], '05A0': [0, '00'], '05A2': [0, '25'], '0042': [0, '0C'],
  '0043': [0, '00'], '0044': [0, '00']}
 
 cols = ["No", "Time_Offset", "Type", "ID", "Data_Length", 'One', 'Two', 'Three', 'Four', 'Five', 'Six', 'Seven', 'Eight']
@@ -71,15 +71,21 @@ if __name__ == "__main__":
                 
                     if mess[1].DATA[check_ind] == check_val:
                         all_data += str(99) + "\t" + id_hex + "\t" + str(hex(mess[1].LEN)[2:]) 
+                    elif mess[1].DATA[check_ind] == ( check_val + 1 ):
+                        all_data += str(98) + "\t" + id_hex + "\t" + str(hex(mess[1].LEN)[2:])
                     else:
                         all_data += str(mess[1].MSGTYPE) + "\t" + id_hex + "\t" + str(hex(mess[1].LEN)[2:]) 
                 else: 
                     all_data += str(mess[1].MSGTYPE) + "\t" + id_hex + "\t" + str(hex(mess[1].LEN)[2:]) 
 
                 for j in range(mess[1].LEN):
-                    if id_hex in unused_bits and check_ind == j and mess[1].DATA[j] == check_val:
+                    if id_hex in unused_bits and check_ind == j and mess[1].DATA[check_ind] == check_val:
                         print("yes")
+                        print(all_data)
                         data_hex = hex(mess[1].DATA[j] - 1)[2:]
+                    elif id_hex in unused_bits and check_ind == j and mess[1].DATA[check_ind] == ( check_val + 1 ):
+                        print("DoS")
+                        data_hex = hex(mess[1].DATA[j] - 2)[2:]
                     else:
                         data_hex = hex(mess[1].DATA[j])[2:]  
                     

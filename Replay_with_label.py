@@ -74,7 +74,7 @@ def Replay_attack(data_iloc):
 if __name__ == "__main__":
     
     CAN = PCANBasic()                            #CAN 생성자 
-    CAN_BUS = PCAN_USBBUS2
+    CAN_BUS = PCAN_USBBUS6
     CAN.Initialize(CAN_BUS, PCAN_BAUD_500K, 2047, 0, 0) #Channel, Btr, HwType, IOPort, INterrupt
     
     dataset_path = "Dataset\\"
