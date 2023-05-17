@@ -67,10 +67,12 @@ if __name__ == "__main__":
     print(l)
     print(lines[0])
     ind = 0
+    time_set = 0
     # while ind <= 500:
-    while True:
-        # time_offset = 0.5
-        time_offset = random.uniform(0.001, 0.5)
+    for _ in range(25000):
+        # Scenario: [0.001, 0.005, 0.1, 0.5]
+        time_offset = 0.001
+        # time_offset = random.uniform(0.001, 0.5)
         print(time_offset)
         datas = []
         for i in range(l):
