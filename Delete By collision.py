@@ -48,28 +48,34 @@ def DoS_Attack(id, data):
 
 if __name__ == "__main__":
     CAN = PCANBasic()                           #CAN 생성자 
-    CAN_BUS = PCAN_USBBUS6
+    CAN_BUS = PCAN_USBBUS2
     # time_offset = random.uniform(0.001, 0.5)
     first_time = True
     prev_time_gap = 0.0
     start_time = time.time()
     result = CAN.Initialize(CAN_BUS, PCAN_BAUD_500K, 2047, 0, 0) #Channel, Btr, HwType, IOPort, INterrupt
-    if result != PCAN_ERROR_OK:           
-        print("oh No")
-        CAN.GetErrorText(result)
-        print(result)
-    mess = CAN.Read(CAN_BUS)
+    
     while True:
+        if result != PCAN_ERROR_OK:           
+            print("oh No")
+            CAN.GetErrorText(result)
+            print(result)
+            break
+        mess = CAN.Read(CAN_BUS)
         if hex(mess[1].ID) != "0x0":
-            if hex(mess[1].ID) != "0x0018":
+            if hex(mess[1].ID) == "0x52a":
                 print("Yes")
+                print()
                 if first_time:
+                    first_time = False
                     prev_time_gap = time.time()
                 else:
-                    offset = offset = (time.time() - start_time)*1000
-                    print(offset)
-                    if offset == 200.0:
+                    offset = (time.time() - prev_time_gap)*1000
+                    prev_time_gap = time.time()
+
+                    if int(offset) == 200 or int(offset) == 199:
                         print("WOnderful")
+                        
         
     # file_id = files[0][:-4]
     file_id = "0018"
