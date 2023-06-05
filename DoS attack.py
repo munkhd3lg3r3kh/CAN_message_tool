@@ -12,6 +12,7 @@ unused_bits = {'0165': [3, '00'], '02B0': [3, '07'], '0164': [0, '00'], '0370': 
  '0690': [0, '03'], '05F0': [0, '00'], '051A': [0, '00'], '0034': [0, '00'], '05A0': [0, '00'], '05A2': [0, '25'], '0042': [0, '0B'],
  '0043': [0, '00'], '0044': [0, '00']}
 
+cols = ["No", "Time_Offset", "Type", "ID", "Data_Length", 'One', 'Two', 'Three', 'Four', 'Five', 'Six', 'Seven', 'Eight']
 
 mypath = "Filtered Datas"
 files = []
@@ -19,6 +20,13 @@ files = []
 for (dirpath, dirnames, filenames) in walk(mypath):
     files.extend(filenames)
 
+def Data_Analyzer(dataframe, ID):
+    new_col = []
+    for i in range(8):
+        new_col.append(cols[i+5])
+        
+    dataframe['All_Datas'] = dataframe[new_col].agg(' '.join, axis=1) 
+    return list(dataframe['All_Datas'])
 
 
 def DoS_Attack(id, data):
