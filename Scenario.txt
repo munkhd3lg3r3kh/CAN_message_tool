@@ -1,0 +1,31 @@
+1. Unlock the door
+2. Open the door
+3. Close the door
+4. Brake and start
+5. Seat belt
+6. Hand Brake Down
+7. Turn on the light (Most Left Controller) 1 up
+8. Turn on the light (Most Left Controller) 2 up
+9. Turn on the light (Most 2nd Left Controller) 1 up
+10. Turn on the light (Most 2nd Left Controller) 2 up
+11. Turn on the long range light (Blue)
+12. Turn off the long range light blue
+13. Turn off the light (Most 2nd left Controller) 1 down
+14. Turn off the light (Most 2nd left Controller) 2 down
+15. Turn off the light (Most left Controller) 1 down
+16. Turn off the light (Most left Controller) 2 down
+17. Turn left turn light on 
+18. Turn left turn light off
+19. Turn right turn light on 
+20. Turn right turn light off
+21. Turn emergency light on
+22. Turn emergency light off
+23. Light into Auto light
+24. long ranged light
+25. move forward and backward and forward
+26. pull hand Brake
+27. Turn off
+28. Seat belt off
+29. Open the door
+30. Close the door
+31. lock the door

@@ -81,12 +81,13 @@ if __name__ == "__main__":
                     all_data += str(mess[1].MSGTYPE) + "\t" + id_hex + "\t" + str(hex(mess[1].LEN)[2:]) 
 
                 for j in range(mess[1].LEN):
-                    if id_hex in unused_bits and check_ind == j and mess[1].DATA[check_ind] == check_val:
-                        print("yes")
+                    if id_hex in unused_bits and check_ind == j and mess[1].DATA[check_ind] == (check_val + 1):
+                        print("Replay")
                         print(all_data)
                         data_hex = hex(mess[1].DATA[j] - 1)[2:]
-                    elif id_hex in unused_bits and check_ind == j and mess[1].DATA[check_ind] == ( check_val + 1 ):
+                    elif id_hex in unused_bits and check_ind == j and mess[1].DATA[check_ind] == ( check_val + 2):
                         print("DoS")
+                        print(all_data)
                         data_hex = hex(mess[1].DATA[j] - 2)[2:]
                     else:
                         data_hex = hex(mess[1].DATA[j])[2:]  

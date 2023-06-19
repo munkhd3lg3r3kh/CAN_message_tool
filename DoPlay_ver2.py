@@ -13,13 +13,13 @@ unused_bits = {'0165': [3, '00'], '051A': [0, '00'], '02B0': [3, '07'], '00A0': 
  '0690': [0, '03'], '0587': [0, '00'], '0370': [0, 'FF']}
 
 msg_dict = {
-    0: [["00", "01", "08"], ["Door is Closed", "Door is Open", "Seat Belt is Off"]],
-    1: [["00", "02"], ["Mid Range Light is On", "Mid Range Light is Off"]],
-    2: [["00", "01"], ["Close Range Light is On", "Close Range Light is Off"]],
+    0: [["20", "30", "28"], ["Door is Closed", "Door is Open", "Seat Belt is Off"]],
+    1: [["00", "02"], ["Mid Range Light is Off", "Mid Range Light is On"]],
+    2: [["00", "01", "03"], ["Long Range Light is Off", "Long Range Light is On", "Far Light Is On"]],
     3: [["10","50", "70", "60"], ["Engine is off", "Engine is Loading", "Engine is On/Brake on", "Engine is On/Brake Off"]],
-    4: [["00", "40", "20"], ["Direction Light is Off", "Turn Left Light is On", "Turn Right Light is On"]],
-    5: [["00", "60"], ["Emergency Light is Off", "Emergency Light is On"]],
-    7: [["00", "10"], ["Seat Belt is Of", "Seat Belt is On"]]
+    4: [["00", "01"], ["Small Light is Off", "Small Light is On"]],
+    5: [["00", "20", "40", "60"], ["Light is Off", "Turn Right Light is On", "Turn Left Light is On", "Emergency Light is On"]],
+    7: [["00", "10"], ["Seat Belt is On", "Seat Belt is Off"]]
 }
 
 using_bytes = ["00", "00", "00", "00", "00", "00", "20", "00"]
@@ -56,44 +56,48 @@ def DoS_Attack(id, data):
 if __name__ == "__main__":
     CAN = PCANBasic()                            #CANi
     CAN_BUS = PCAN_USBBUS6
-    result = CAN.Initialize(CAN_BUS, PCAN_BAUD_500K, 2047, 0, 0) #Channel, Btr, HwType, IOPort, INterrupt
     counter = 0
     start_time = time.time()
     ind = 0
+    result = CAN.Initialize(CAN_BUS, PCAN_BAUD_500K, 2047, 0, 0) #Channel, Btr, HwType, IOPort, INterrupt
+    if result != PCAN_ERROR_OK:
+        # An error occurred, get a text describing the error and show it
+        #
+        print("oh No")
+        CAN.GetErrorText(result)
+        print(result)
     while True:
-        if result != PCAN_ERROR_OK:
-            # An error occurred, get a text describing the error and show it
-            #
-            print("oh No")
-            CAN.GetErrorText(result)
-            print(result)
+        # print("PCAN-USB Pro FD (Ch-1) was initialized")
+        mess = CAN.Read(CAN_BUS)
+        if hex(mess[1].ID) != "0x0":
+            if hex(mess[1].ID) == "0x18":
+                all_data = str(ind) + ')' + "\t"
+                offset = (time.time() - start_time)*1000
+                all_data += "{:.1f}".format(offset) + "\t"
+                id_hex = hex(mess[1].ID)[2:]
+                for _ in range(4 - len(id_hex)):
+                    id_hex = '0' + id_hex.upper()
+                for j in range(mess[1].LEN):
+                    data_hex = hex(mess[1].DATA[j])[2:]
+                    if j in msg_dict.keys():
+                        for _ in range(2 - len(data_hex)):
+                            data_hex = '0' + data_hex.upper()
+        
+                        temp_val = data_hex
+                        temp_ind = msg_dict[j][0].index(temp_val)
+                        print(j, end=": ")
+                        print(msg_dict[j][1][temp_ind])
+                        if temp_val != using_bytes[j]:
+                            using_bytes[j] = temp_val
+                        print(using_bytes)
+                all_data += "\t" + data_hex.upper()
+                all_data += "\n"
+                time.sleep(0.1)
+                os.system("cls")
+        if time.time() - start_time > 100:
+            os.system("cls")
+            print("Phase #1 has done")
             break
-        else:
-            # print("PCAN-USB Pro FD (Ch-1) was initialized")
-            mess = CAN.Read(CAN_BUS)
-            if hex(mess[1].ID) != "0x0":
-                if hex(mess[1].ID) == "0x18":
-                    all_data = str(ind) + ')' + "\t"
-                    offset = (time.time() - start_time)*1000
-                    all_data += "{:.1f}".format(offset) + "\t"
-                    id_hex = hex(mess[1].ID)[2:]
-                    for _ in range(4 - len(id_hex)):
-                        id_hex = '0' + id_hex.upper()
-                    for j in range(mess[1].LEN):
-                        data_hex = hex(mess[1].DATA[j])[2:]
-                        if j in msg_dict.keys():
-                            temp_val = data_hex
-                            temp_ind = msg_dict[j][0].index(temp_val)
-                            print(j, end=": ")
-                            print(msg_dict[j][1][temp_ind])
-                            if temp_val != using_bytes[j]:
-                                using_bytes[j] = temp_val
-                    for _ in range(2 - len(data_hex)):
-                        data_hex = '0' + data_hex.upper()
-                    all_data += "\t" + data_hex.upper()
-                    all_data += "\n"
-                    time.sleep(1)
-                    os.system("cls")
-            if time.time() - start_time > 5000:
-                break
+    while True:
+
         

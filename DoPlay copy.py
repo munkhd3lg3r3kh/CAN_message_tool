@@ -77,10 +77,7 @@ def DoS_Attack(id, data):
     check_ind = unused_bits[id][0]
     check_val = unused_bits[id][1]
     for i in range(len(data)):
-        if check_ind == i and check_val == data[i]:
-            DoS_DATA.DATA[i] = int(data[i], 16) + 2
-        else:
-            DoS_DATA.DATA[i] = int(data[i], 16)
+        DoS_DATA.DATA[i] = int(data[i], 16)
         all_datas += str(DoS_DATA.DATA[i]) + "\t"
         # all_datas += data[i]+ "\t"
 
@@ -101,6 +98,11 @@ event_val_usage = [[0, 44], [44, 45], [45, 48], [48, 53], [53, 58], [58, 63], [6
  [773, 777], [777, 801], [801, 808], [808, 815], [815, 816], [816, 933], [933, 939], [939, 1009],
  [1009, 1013], [1013, 1017], [1017, 1021], [1021, 1377], [1377, 1477], [1477, 1498], [1498, 1558],
  [1558, 1606], [1606, 1674], [1674, 1677], [1677, 1678], [1678, 1685]]
+
+event_based = [[44, 68], [75, 80], [115, 120], [166, 179], [210, 213], [231, 244], [282, 289], [292, 295],
+ [310, 314], [329, 335], [360, 365], [395, 399], [421, 426], [441, 445], [456, 462], [476, 481], [515, 600], [607, 696],
+ [706, 782], [801, 821], [903, 908], [933, 944], [955, 958], [1009, 1026], [1212, 1215], [1274, 1277], [1377, 1382], [1477, 1482],
+ [1497, 1503], [1558, 1563], [1606, 1611], [1674, 1690]]
 
 if __name__ == "__main__":
     CAN = PCANBasic()                           #CAN 생성자 
@@ -124,7 +126,7 @@ if __name__ == "__main__":
     # while ind <= 500:
     # for i in range(len(used_datas)):
     while True:
-        start_pos, end_pos = event_val_usage[ind]
+        start_pos, end_pos = event_based[ind]
         for i in range(start_pos, end_pos):
             try:    
                 if keyboard.is_pressed('q'):  # if key 'q' is pressed 
