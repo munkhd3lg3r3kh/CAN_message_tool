@@ -62,20 +62,20 @@ def Replay_attack(data_iloc):
     unused_index = 0
     all_datas += "\n"
     print(all_datas)
-    res = CAN.Write(CAN_BUS, Fuzzing_attack)
-    if res != PCAN_ERROR_OK:
-        print("Oh nooo")
-        result = CAN.GetErrorText(res)
-        print(result)
-        exit()
-    time.sleep(time_offset)
+    # res = CAN.Write(CAN_BUS, Fuzzing_attack)
+    # if res != PCAN_ERROR_OK:
+    #     print("Oh nooo")
+    #     result = CAN.GetErrorText(res)
+    #     print(result)
+    #     exit()
+    # time.sleep(time_offset)
 
 
 if __name__ == "__main__":
     
-    CAN = PCANBasic()                            #CAN 생성자 
-    CAN_BUS = PCAN_USBBUS6
-    CAN.Initialize(CAN_BUS, PCAN_BAUD_500K, 2047, 0, 0) #Channel, Btr, HwType, IOPort, INterrupt
+    # CAN = PCANBasic()                            #CAN 생성자 
+    # CAN_BUS = PCAN_USBBUS6
+    # CAN.Initialize(CAN_BUS, PCAN_BAUD_500K, 2047, 0, 0) #Channel, Btr, HwType, IOPort, INterrupt
     
     dataset_path = "Dataset\\"
     dataset_name = "2022.08.12 구쏘울 C-CAN (정상).trc"
