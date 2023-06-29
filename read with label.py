@@ -5,6 +5,8 @@ import time
 import os.path
 import datetime
 
+# this program contains 
+
 unused_bits = {'0165': [3, '00'], '051A': [0, '00'], '02B0': [3, '07'], '00A0': [6, '00'],
  '05E4': [0, '00'], '0153': [4, '00'], '02A0': [1, '00'], '0120': [0, '00'], '043F': [2, '60'],
  '0316': [7, '7F'], '04B1': [4, '00'], '0050': [0, '00'], '0164': [0, '00'], '0018': [6, '20'],
@@ -54,47 +56,41 @@ if __name__ == "__main__":
             print("oh No")
             CAN.GetErrorText(result)
             print(result)
-            break
+            break 
         else:
             # print("PCAN-USB Pro FD (Ch-1) was initialized")
             mess = CAN.Read(CAN_BUS)
             if hex(mess[1].ID) != "0x0":
+                label_data = "Legitimate"
                 all_data = str(ind) + ')' + "\t"
                 offset = (time.time() - start_time)*1000
                 all_data += "{:.1f}".format(offset) + "\t"
-                id_hex = hex(mess[1].ID)[2:]
+                injection_id = injection_id.split("x")[1]
                 for _ in range(4 - len(id_hex)):
                     id_hex = '0' + id_hex.upper()
-                    
-            
-                if id_hex in unused_bits:
-                    check_val = int(unused_bits[id_hex][1], 16) + 1
-                    check_ind = int(unused_bits[id_hex][0])
                 
-                    if mess[1].DATA[check_ind] == check_val:
-                        all_data += str(99) + "\t" + id_hex + "\t" + str(hex(mess[1].LEN)[2:]) 
-                    elif mess[1].DATA[check_ind] == ( check_val + 1 ):
-                        all_data += str(98) + "\t" + id_hex + "\t" + str(hex(mess[1].LEN)[2:])
-                    else:
-                        all_data += str(mess[1].MSGTYPE) + "\t" + id_hex + "\t" + str(hex(mess[1].LEN)[2:]) 
-                else: 
-                    all_data += str(mess[1].MSGTYPE) + "\t" + id_hex + "\t" + str(hex(mess[1].LEN)[2:]) 
+                all_data += str(mess[1].MSGTYPE) + "\t" + id_hex + "\t" + str(hex(mess[1].LEN)[2:]) 
 
                 for j in range(mess[1].LEN):
-                    if id_hex in unused_bits and check_ind == j and mess[1].DATA[check_ind] == (check_val + 1):
-                        print("Replay")
-                        print(all_data)
-                        data_hex = hex(mess[1].DATA[j] - 1)[2:]
-                    elif id_hex in unused_bits and check_ind == j and mess[1].DATA[check_ind] == ( check_val + 2):
-                        print("DoS")
-                        print(all_data)
-                        data_hex = hex(mess[1].DATA[j] - 2)[2:]
+                    if id_hex in unused_bits:
+                        check_val = int(unused_bits[id_hex][1], 16)
+                        check_ind = int(unused_bits[id_hex][0])
+
+                        if check_ind == j and mess[1].DATA[check_ind] == (check_val + 1):
+                            print("Replay")
+                            data_hex = hex(mess[1].DATA[j] - 1)[2:]
+                        elif check_ind == j and mess[1].DATA[check_ind] == ( check_val + 2):
+                            print("DoS")
+                            data_hex = hex(mess[1].DATA[j] - 2)[2:]
+                        elif check_ind == j and mess[1].DATA[check_ind] == ( check_val + 3):
+                            print("Fuzzy")
+                            data_hex = hex(random.randrange(0, 255))[2:]
                     else:
                         data_hex = hex(mess[1].DATA[j])[2:]  
-                    
+
                     for _ in range(2 - len(data_hex)):
                         data_hex = '0' + data_hex.upper()
-     
+
                     all_data += "\t" + data_hex.upper()
                 all_data += "\n"
                 ind += 1
