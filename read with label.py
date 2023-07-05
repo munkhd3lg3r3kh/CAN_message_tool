@@ -111,7 +111,9 @@ if __name__ == "__main__":
                     data_hex = '0' + data_hex.upper()
 
                 all_data += "\t" + data_hex.upper()
-
+            for _ in range(mess[1].LEN, 8):
+                all_data += "\t" + "-1"
+                
             all_data += "\t" + label_data 
             all_data += "\n"
             ind += 1
