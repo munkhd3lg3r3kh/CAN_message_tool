@@ -106,9 +106,9 @@ if __name__ == "__main__":
         k = 10
         # if hex(mess[1].ID) == "0x18":
         if 0 == 0:
-            # if cnt_b > 100:
-            #     print("Bye Bye")
-            #     break
+            if cnt_b > 100:
+                print("Bye Bye")
+                break
             first_injection = True
             if cnt_b % 4 == 0:       
                 using_bytes[5] = msg_dict[5][0][3]
